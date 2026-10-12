@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: unsafe-demo}
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      containers:
+        - name: server
+          image: app:latest
+          securityContext: {privileged: true}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: broad-access}
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]

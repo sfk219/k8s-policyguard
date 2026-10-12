@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: safe-demo}
+spec:
+  template:
+    spec:
+      securityContext: {runAsNonRoot: true}
+      containers:
+        - name: web
+          image: nginx:1.27
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          readinessProbe:
+            httpGet: {path: /, port: 80}
+          resources:
+            limits: {cpu: "200m", memory: "128Mi"}
+            requests: {cpu: "50m", memory: "32Mi"}
